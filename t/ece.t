@@ -42,7 +42,11 @@ subtest 'derive_key' => sub {
   for my $case (@DK_CASES) {
     my ($in, $out) = @$case;
     my @args = ($in->[0], map decode_base64url($_), @$in[1..5]);
-    my ($got_key, $got_nonce) = derive_key(@args);
+    my ($got_key, $got_nonce) = eval { derive_key(@args) };
+    if (!is $@, '') {
+      diag explain \@args;
+      next;
+    }
     is $got_key, decode_base64url($out->[0]), 'right key';
     is $got_nonce, decode_base64url($out->[1]), 'right nonce';
   }
