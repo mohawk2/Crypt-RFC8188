@@ -1,3 +1,5 @@
+- more test hardening
+
 0.02 2020-09-05
 - harden against decode failure for better diagnostic
 
