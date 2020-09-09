@@ -122,64 +122,64 @@ sub maybe_decode_base64url { defined($_[0]) ? decode_base64url $_[0] : undef }
 # perl -Mojo -e 'print r j f(shift)->slurp' file >file.pl
 my @CASES = (
   {
-    "encrypted" => "hwaB6ajPR3BbJ_EtJ7DPGwAAEAAALeErM5xhsiAHm4Kqh_SuUT8naH0b1dgCaukr-9b7FRfYEBCadps",
-    "input" => "wXe3vEnuHqhdGgrwaaT1j2PLt1aK",
-    "params" => {
-      "decrypt" => {
-        "key" => "0MLhZq8sewP4P2h18tlS2A",
-        "salt" => "hwaB6ajPR3BbJ_EtJ7DPGw"
+    encrypted => "hwaB6ajPR3BbJ_EtJ7DPGwAAEAAALeErM5xhsiAHm4Kqh_SuUT8naH0b1dgCaukr-9b7FRfYEBCadps",
+    input => "wXe3vEnuHqhdGgrwaaT1j2PLt1aK",
+    params => {
+      decrypt => {
+        key => "0MLhZq8sewP4P2h18tlS2A",
+        salt => "hwaB6ajPR3BbJ_EtJ7DPGw",
       },
-      "encrypt" => {
-        "key" => "0MLhZq8sewP4P2h18tlS2A",
-        "salt" => "hwaB6ajPR3BbJ_EtJ7DPGw"
-      }
+      encrypt => {
+        key => "0MLhZq8sewP4P2h18tlS2A",
+        salt => "hwaB6ajPR3BbJ_EtJ7DPGw",
+      },
     },
-    "test" => "useExplicitKey aes128gcm"
+    test => "useExplicitKey aes128gcm",
   },
   {
-    "encrypted" => "sj2q-yxtvnEKrtNyfo-lPwAAEAAAPpHyEJGNkL9xmHAxwv_eieKYQWk",
-    "input" => "pHFj",
-    "params" => {
-      "decrypt" => {
-        "authSecret" => "GCIe1dcp-nfsQw5nFoVzmw",
-        "key" => "297VgT05oFIZfyasTP_B7w",
-        "salt" => "sj2q-yxtvnEKrtNyfo-lPw"
+    encrypted => "sj2q-yxtvnEKrtNyfo-lPwAAEAAAPpHyEJGNkL9xmHAxwv_eieKYQWk",
+    input => "pHFj",
+    params => {
+      decrypt => {
+        authSecret => "GCIe1dcp-nfsQw5nFoVzmw",
+        key => "297VgT05oFIZfyasTP_B7w",
+        salt => "sj2q-yxtvnEKrtNyfo-lPw",
       },
-      "encrypt" => {
-        "authSecret" => "GCIe1dcp-nfsQw5nFoVzmw",
-        "key" => "297VgT05oFIZfyasTP_B7w",
-        "salt" => "sj2q-yxtvnEKrtNyfo-lPw"
-      }
+      encrypt => {
+        authSecret => "GCIe1dcp-nfsQw5nFoVzmw",
+        key => "297VgT05oFIZfyasTP_B7w",
+        salt => "sj2q-yxtvnEKrtNyfo-lPw",
+      },
     },
-    "test" => "authenticationSecret aes128gcm"
+    test => "authenticationSecret aes128gcm",
   },
   {
-    "encrypted" => "rNEm6--7fMS1FuTr8btW3AAAEAAAnwgL-gYZKP4cme0fyuMKIISSZEBw8e44aiSVlycIOO9-2HOgcuKuLGJf4f4r7mOcP0aJgOLTbfxQYuZAaJlVAbZc5q23vPKzOzxf2VuKgYvdwfjESSA",
-    "input" => "olO7J2DXC6DjHuhke8jmBckEFVheWN22Ib0en7B85t9orab9Lhb0_sifeMcEHBxl4O8xfP_FJlJ5A0FCAvqbzZW4e-qd",
-    "params" => {
-      "decrypt" => {
-        "key" => "ZkBfrd75r93uxCpocaMhoA",
-        "salt" => "rNEm6--7fMS1FuTr8btW3A"
+    encrypted => "rNEm6--7fMS1FuTr8btW3AAAEAAAnwgL-gYZKP4cme0fyuMKIISSZEBw8e44aiSVlycIOO9-2HOgcuKuLGJf4f4r7mOcP0aJgOLTbfxQYuZAaJlVAbZc5q23vPKzOzxf2VuKgYvdwfjESSA",
+    input => "olO7J2DXC6DjHuhke8jmBckEFVheWN22Ib0en7B85t9orab9Lhb0_sifeMcEHBxl4O8xfP_FJlJ5A0FCAvqbzZW4e-qd",
+    params => {
+      decrypt => {
+        key => "ZkBfrd75r93uxCpocaMhoA",
+        salt => "rNEm6--7fMS1FuTr8btW3A",
       },
-      "encrypt" => {
-        "key" => "ZkBfrd75r93uxCpocaMhoA",
-        "salt" => "rNEm6--7fMS1FuTr8btW3A"
-      }
+      encrypt => {
+        key => "ZkBfrd75r93uxCpocaMhoA",
+        salt => "rNEm6--7fMS1FuTr8btW3A",
+      },
     },
-    "test" => "exactlyOneRecord aes128gcm"
+    test => "exactlyOneRecord aes128gcm",
   },
   {
-    "encrypted" => "phSedT69xhtlKvR3lfkMKQAAAGFBBCp3NKi1owBzC8i3Sgkw15WJTuXkhjlcVdv4S0alC0W8VfNhE8DWxlzwXsImQUpM0zxNWotxRbDXt1yAfiP03d0Q4o4LCPfJr9aJAn9eKE7G_681R7-yoDEHilLcfs_OXATkjCpl99aTApG0dFBudoF9PHQftfLcZo-l8H7rA5frvbFvxj09RngrgnrqrPn4Vahmhg1Jn--fYOf02nW8zw",
-    "input" => "n9_vFNekfRIXbmXRjb_1SL0XQWPoJSvmYvtb_g6a90qRdRdhmbDIHeg8B19iCbm732X5s_1VOGWBFivjFCmWQkWcE2_uq_MGPU00SgaS",
-    "keys" => {
-      "decrypt" => <<'EOF',
+    encrypted => "phSedT69xhtlKvR3lfkMKQAAAGFBBCp3NKi1owBzC8i3Sgkw15WJTuXkhjlcVdv4S0alC0W8VfNhE8DWxlzwXsImQUpM0zxNWotxRbDXt1yAfiP03d0Q4o4LCPfJr9aJAn9eKE7G_681R7-yoDEHilLcfs_OXATkjCpl99aTApG0dFBudoF9PHQftfLcZo-l8H7rA5frvbFvxj09RngrgnrqrPn4Vahmhg1Jn--fYOf02nW8zw",
+    input => "n9_vFNekfRIXbmXRjb_1SL0XQWPoJSvmYvtb_g6a90qRdRdhmbDIHeg8B19iCbm732X5s_1VOGWBFivjFCmWQkWcE2_uq_MGPU00SgaS",
+    keys => {
+      decrypt => <<'EOF',
 -----BEGIN EC PRIVATE KEY-----
 MHcCAQEEIJnfq/XwOS2/jEBfeL+Pg1zVxwHmrm0mJn77uMlAc8dFoAoGCCqGSM49
 AwEHoUQDQgAEGbC8Rb3pRwtVgyBSUXKAzTEB3SoOEm9RgNAWXftPWOBx67fEc30x
 ArDfL4pmmZu+/MTpVZku0buyi1Tbqu7hbA==
 -----END EC PRIVATE KEY-----
 EOF
-      "encrypt" => <<'EOF',
+      encrypt => <<'EOF',
 -----BEGIN EC PRIVATE KEY-----
 MHcCAQEEIJLIfrqKwtDj7SyyrQUwB0ynXFqoN0hzibDDFQOlFb2soAoGCCqGSM49
 AwEHoUQDQgAEKnc0qLWjAHMLyLdKCTDXlYlO5eSGOVxV2/hLRqULRbxV82ETwNbG
@@ -187,19 +187,19 @@ XPBewiZBSkzTPE1ai3FFsNe3XIB+I/Td3Q==
 -----END EC PRIVATE KEY-----
 EOF
     },
-    "params" => {
-      "decrypt" => {
-        "authSecret" => "dYwViyw3w5oIIVNpHBddAQ",
-        "salt" => "phSedT69xhtlKvR3lfkMKQ"
+    params => {
+      decrypt => {
+        authSecret => "dYwViyw3w5oIIVNpHBddAQ",
+        salt => "phSedT69xhtlKvR3lfkMKQ",
       },
-      "encrypt" => {
-        "authSecret" => "dYwViyw3w5oIIVNpHBddAQ",
-        "dh" => "BBmwvEW96UcLVYMgUlFygM0xAd0qDhJvUYDQFl37T1jgceu3xHN9MQKw3y-KZpmbvvzE6VWZLtG7sotU26ru4Ww",
-        "rs" => 97,
-        "salt" => "phSedT69xhtlKvR3lfkMKQ"
-      }
+      encrypt => {
+        authSecret => "dYwViyw3w5oIIVNpHBddAQ",
+        dh => "BBmwvEW96UcLVYMgUlFygM0xAd0qDhJvUYDQFl37T1jgceu3xHN9MQKw3y-KZpmbvvzE6VWZLtG7sotU26ru4Ww",
+        rs => 97,
+        salt => "phSedT69xhtlKvR3lfkMKQ",
+      },
     },
-    "test" => "useDH aes128gcm"
+    test => "useDH aes128gcm",
   },
 );
 subtest 'test encryption/decryption' => sub {
