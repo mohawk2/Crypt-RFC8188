@@ -197,15 +197,17 @@ subtest 'test encryption/decryption' => sub {
       require Text::Diff;
       diag Text::Diff::diff(\join('', map "$_\n", split //, $encrypted), \join('', map "$_\n", split //, $got_encrypted));
     };
-    my $got_input = eval { ece_decrypt_aes128gcm(
+    my @decrypt_args = (
       $encrypted,
       maybe_decode_base64url($case->{key}),
       $mode2private_key{decrypt},
       maybe_decode_base64url($case->{params}{decrypt}{dh}),
       maybe_decode_base64url($case->{authSecret}),
-    ) };
+    );
+    my $got_input = eval { ece_decrypt_aes128gcm(@decrypt_args) };
     is $@, '';
     is $got_input, $input, "$case->{test} decrypted right" or eval {
+      diag explain \@decrypt_args;
       require Text::Diff;
       diag Text::Diff::diff(\join('', map "$_\n", split //, $input), \join('', map "$_\n", split //, $got_input));
     };
