@@ -115,7 +115,7 @@ sub ece_decrypt_aes128gcm {
     my $data = gcm_decrypt_verify 'AES', $key_, $iv, '', $ciphertext, $tag;
     die "Decryption error\n" unless defined $data;
     my $last = ($i + $chunk_size) >= $end;
-    $data =~ s/\x00*$//;
+    $data =~ s/\x00*\z//;
     die "all zero record plaintext\n" if !length $data;
     die "record delimiter != 1\n" if !$last and $data !~ s/\x01$//;
     die "last record delimiter != 2\n" if $last and $data !~ s/\x02$//;
