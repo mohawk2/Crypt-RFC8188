@@ -124,54 +124,29 @@ my @CASES = (
   {
     encrypted => "hwaB6ajPR3BbJ_EtJ7DPGwAAEAAALeErM5xhsiAHm4Kqh_SuUT8naH0b1dgCaukr-9b7FRfYEBCadps",
     input => "wXe3vEnuHqhdGgrwaaT1j2PLt1aK",
-    params => {
-      decrypt => {
-        key => "0MLhZq8sewP4P2h18tlS2A",
-        salt => "hwaB6ajPR3BbJ_EtJ7DPGw",
-      },
-      encrypt => {
-        key => "0MLhZq8sewP4P2h18tlS2A",
-        salt => "hwaB6ajPR3BbJ_EtJ7DPGw",
-      },
-    },
+    key => "0MLhZq8sewP4P2h18tlS2A",
+    salt => "hwaB6ajPR3BbJ_EtJ7DPGw",
     test => "useExplicitKey aes128gcm",
   },
   {
     encrypted => "sj2q-yxtvnEKrtNyfo-lPwAAEAAAPpHyEJGNkL9xmHAxwv_eieKYQWk",
     input => "pHFj",
-    params => {
-      decrypt => {
-        authSecret => "GCIe1dcp-nfsQw5nFoVzmw",
-        key => "297VgT05oFIZfyasTP_B7w",
-        salt => "sj2q-yxtvnEKrtNyfo-lPw",
-      },
-      encrypt => {
-        authSecret => "GCIe1dcp-nfsQw5nFoVzmw",
-        key => "297VgT05oFIZfyasTP_B7w",
-        salt => "sj2q-yxtvnEKrtNyfo-lPw",
-      },
-    },
+    authSecret => "GCIe1dcp-nfsQw5nFoVzmw",
+    key => "297VgT05oFIZfyasTP_B7w",
+    salt => "sj2q-yxtvnEKrtNyfo-lPw",
     test => "authenticationSecret aes128gcm",
   },
   {
     encrypted => "rNEm6--7fMS1FuTr8btW3AAAEAAAnwgL-gYZKP4cme0fyuMKIISSZEBw8e44aiSVlycIOO9-2HOgcuKuLGJf4f4r7mOcP0aJgOLTbfxQYuZAaJlVAbZc5q23vPKzOzxf2VuKgYvdwfjESSA",
     input => "olO7J2DXC6DjHuhke8jmBckEFVheWN22Ib0en7B85t9orab9Lhb0_sifeMcEHBxl4O8xfP_FJlJ5A0FCAvqbzZW4e-qd",
-    params => {
-      decrypt => {
-        key => "ZkBfrd75r93uxCpocaMhoA",
-        salt => "rNEm6--7fMS1FuTr8btW3A",
-      },
-      encrypt => {
-        key => "ZkBfrd75r93uxCpocaMhoA",
-        salt => "rNEm6--7fMS1FuTr8btW3A",
-      },
-    },
+    key => "ZkBfrd75r93uxCpocaMhoA",
+    salt => "rNEm6--7fMS1FuTr8btW3A",
     test => "exactlyOneRecord aes128gcm",
   },
   {
     encrypted => "phSedT69xhtlKvR3lfkMKQAAAGFBBCp3NKi1owBzC8i3Sgkw15WJTuXkhjlcVdv4S0alC0W8VfNhE8DWxlzwXsImQUpM0zxNWotxRbDXt1yAfiP03d0Q4o4LCPfJr9aJAn9eKE7G_681R7-yoDEHilLcfs_OXATkjCpl99aTApG0dFBudoF9PHQftfLcZo-l8H7rA5frvbFvxj09RngrgnrqrPn4Vahmhg1Jn--fYOf02nW8zw",
     input => "n9_vFNekfRIXbmXRjb_1SL0XQWPoJSvmYvtb_g6a90qRdRdhmbDIHeg8B19iCbm732X5s_1VOGWBFivjFCmWQkWcE2_uq_MGPU00SgaS",
-    keys => {
+    private_keys => {
       decrypt => <<'EOF',
 -----BEGIN EC PRIVATE KEY-----
 MHcCAQEEIJnfq/XwOS2/jEBfeL+Pg1zVxwHmrm0mJn77uMlAc8dFoAoGCCqGSM49
@@ -187,16 +162,12 @@ XPBewiZBSkzTPE1ai3FFsNe3XIB+I/Td3Q==
 -----END EC PRIVATE KEY-----
 EOF
     },
+    authSecret => "dYwViyw3w5oIIVNpHBddAQ",
+    salt => "phSedT69xhtlKvR3lfkMKQ",
     params => {
-      decrypt => {
-        authSecret => "dYwViyw3w5oIIVNpHBddAQ",
-        salt => "phSedT69xhtlKvR3lfkMKQ",
-      },
       encrypt => {
-        authSecret => "dYwViyw3w5oIIVNpHBddAQ",
         dh => "BBmwvEW96UcLVYMgUlFygM0xAd0qDhJvUYDQFl37T1jgceu3xHN9MQKw3y-KZpmbvvzE6VWZLtG7sotU26ru4Ww",
         rs => 97,
-        salt => "phSedT69xhtlKvR3lfkMKQ",
       },
     },
     test => "useDH aes128gcm",
@@ -205,28 +176,19 @@ EOF
 subtest 'test encryption/decryption' => sub {
   for my $case (@CASES) {
     my ($input, $encrypted) = map decode_base64url($_), @$case{qw(input encrypted)};
-    my %mode2keys;
-    if (my $keys = $case->{keys}) {
-      $mode2keys{$_}{private_key} = Crypt::PK::ECC->new(
+    my %mode2private_key;
+    if (my $keys = $case->{private_keys}) {
+      $mode2private_key{$_} = Crypt::PK::ECC->new(
         \$keys->{$_}
       ) for qw(encrypt decrypt);
-    } else {
-      $mode2keys{$_}{key} = decode_base64url $case->{params}{$_}{key}
-        for qw(encrypt decrypt);
     }
-    my %mode2auth_secret;
-    $mode2auth_secret{$_} = maybe_decode_base64url $case->{params}{$_}{authSecret}
-      for qw(encrypt decrypt);
-    my %mode2dh;
-    $mode2dh{$_} = maybe_decode_base64url $case->{params}{$_}{dh}
-      for qw(encrypt decrypt);
     my $got_encrypted = eval { ece_encrypt_aes128gcm(
       $input,
-      decode_base64url($case->{params}{encrypt}{salt}),
-      $mode2keys{encrypt}{key},
-      $mode2keys{encrypt}{private_key},
-      $mode2dh{encrypt},
-      $mode2auth_secret{encrypt},
+      decode_base64url($case->{salt}),
+      maybe_decode_base64url($case->{key}),
+      $mode2private_key{encrypt},
+      maybe_decode_base64url($case->{params}{encrypt}{dh}),
+      maybe_decode_base64url($case->{authSecret}),
       $case->{keyid},
       $case->{params}{encrypt}{rs} || 4096,
     ) };
@@ -237,10 +199,10 @@ subtest 'test encryption/decryption' => sub {
     };
     my $got_input = eval { ece_decrypt_aes128gcm(
       $encrypted,
-      $mode2keys{decrypt}{key},
-      $mode2keys{decrypt}{private_key},
-      $mode2dh{decrypt},
-      $mode2auth_secret{decrypt},
+      maybe_decode_base64url($case->{key}),
+      $mode2private_key{decrypt},
+      maybe_decode_base64url($case->{params}{decrypt}{dh}),
+      maybe_decode_base64url($case->{authSecret}),
     ) };
     is $@, '';
     is $got_input, $input, "$case->{test} decrypted right" or eval {
