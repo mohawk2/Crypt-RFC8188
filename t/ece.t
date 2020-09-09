@@ -99,14 +99,14 @@ subtest 'decrypt exceptions' => sub {
       "\xef\x0cg\x1b\xe0\x14I~\xdc",
     "d\xc7\x0ed\xa7%U\x14Q\xf2\x08\xdf\xba\xa0\xb9r",
   ) };
-  like $@, qr/record delimiter != 1/;
+  like $@, qr/record delimiter\(2\) != 1/;
   eval { ece_decrypt_aes128gcm(
     $m_header .
       "\xba\xc7\xb9ev\x0b\xf0\x9eB\xb1\x08Ji" .
       "\xe4P\x1b\x8dI\xdb\xc6y#MG\xc2W\x16",
     "d\xc7\x0ed\xa7%U\x14Q\xf2\x08\xdf\xba\xa0\xb9r",
   ) };
-  like $@, qr/last record delimiter != 2/;
+  like $@, qr/last record delimiter\(1\) != 2/;
   eval { ece_decrypt_aes128gcm(
     $m_header .
       "\xbb\xc6\xb1\x1dF:~\x0f\x07+\xbe\xaaD" .

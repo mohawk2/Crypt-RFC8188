@@ -117,8 +117,10 @@ sub ece_decrypt_aes128gcm {
     my $last = ($i + $chunk_size) >= $end;
     $data =~ s/\x00*\z//;
     die "all zero record plaintext\n" if !length $data;
-    die "record delimiter != 1\n" if !$last and $data !~ s/\x01$//;
-    die "last record delimiter != 2\n" if $last and $data !~ s/\x02$//;
+    $data =~ s/(.)$//;
+    my $last_byte = ord $1;
+    die "record delimiter($last_byte) != 1\n" if !$last and $last_byte != 1;
+    die "last record delimiter($last_byte) != 2\n" if $last and $last_byte != 2;
     $result .= $data;
     $counter++;
   }
