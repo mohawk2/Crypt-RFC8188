@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More;
-use MIME::Base64 qw(decode_base64url);
+use MIME::Base64 qw(encode_base64url decode_base64url);
 use Crypt::PK::ECC;
 use Crypt::PRNG qw(random_bytes random_bytes_b64u);
 use Crypt::RFC8188 qw(ece_encrypt_aes128gcm ece_decrypt_aes128gcm derive_key);
@@ -117,6 +117,7 @@ subtest 'decrypt exceptions' => sub {
 };
 
 sub maybe_decode_base64url { defined($_[0]) ? decode_base64url $_[0] : undef }
+sub maybe_encode_base64url { defined($_[0]) ? encode_base64url $_[0] : undef }
 
 # generated from encrypt_data.json from the JavaScript library, then:
 # perl -Mojo -e 'print r j f(shift)->slurp' file >file.pl
@@ -207,7 +208,7 @@ subtest 'test encryption/decryption' => sub {
     my $got_input = eval { ece_decrypt_aes128gcm(@decrypt_args) };
     is $@, '';
     is $got_input, $input, "$case->{test} decrypted right" or eval {
-      diag explain \@decrypt_args;
+      diag explain [ map +(ref() ? $_ : maybe_encode_base64url $_), @decrypt_args ];
       require Text::Diff;
       diag Text::Diff::diff(\join('', map "$_\n", split //, $input), \join('', map "$_\n", split //, $got_input));
     };
